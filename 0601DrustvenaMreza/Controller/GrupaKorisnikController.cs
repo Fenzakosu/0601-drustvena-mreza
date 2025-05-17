@@ -32,5 +32,53 @@ namespace _0601DrustvenaMreza.Controller
 
             return Ok(korisniciGrupe);
         }
+
+        // Ubaciti korisnika u grupu
+        [HttpPut]
+        public ActionResult<Korisnik> Put(int grupaId, [FromBody] int korisnikId)
+        {
+            if (!GrupaRepo.Data.ContainsKey(grupaId))
+            {
+                return NotFound("Grupa nije pronađena");
+            }
+
+            if (!KorisnikRepo.Data.ContainsKey(korisnikId))
+            {
+                return NotFound("Korisnik nije pronađen");
+            }
+
+            Korisnik korisnik = KorisnikRepo.Data[korisnikId];
+            if (korisnik.grupe.ContainsKey(grupaId))
+            {
+                return BadRequest("Korisnik je već član grupe");
+            }
+
+            korisnik.grupe.Add(grupaId, GrupaRepo.Data[grupaId]);
+            return Ok(korisnik);
+        }
+
+        // Izbaciti korisnika iz grupe
+        [HttpDelete("{korisnikId}")]
+        public ActionResult<Korisnik> Delete(int grupaId, int korisnikId)
+        {
+            if (!GrupaRepo.Data.ContainsKey(grupaId))
+            {
+                return NotFound("Grupa nije pronađena");
+            }
+
+            if (!KorisnikRepo.Data.ContainsKey(korisnikId))
+            {
+                return NotFound("Korisnik nije pronađen");
+            }
+
+            Korisnik korisnik = KorisnikRepo.Data[korisnikId];
+            if (!korisnik.grupe.ContainsKey(grupaId))
+            {
+                return BadRequest("Korisnik nije član grupe");
+            }
+
+            korisnik.grupe.Remove(grupaId);
+            return Ok(korisnik);
+        }
     }
 }
