@@ -49,7 +49,6 @@ namespace _0601DrustvenaMreza.Repository
                 {
                     if (idKorisnika == korisnik.Id && idGrupe == grupa.Id)
                     {
-                        korisnik.grupe[idGrupe] = grupa;
                         grupa.korisnici[idKorisnika] = korisnik;
                     }
                 }

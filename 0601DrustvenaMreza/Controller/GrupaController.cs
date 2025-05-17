@@ -53,7 +53,7 @@ namespace _0601DrustvenaMreza.Controller
         }
 
         // DELETE
-        [HttpDelete("{grupaId}")]
+        [HttpDelete("{id}")]
         public ActionResult DeleteGroup(int id)
         {
             if (!GrupaRepo.Data.Keys.Contains(id))

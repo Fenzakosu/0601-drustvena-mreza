@@ -1,4 +1,4 @@
-
+﻿
 namespace _0601DrustvenaMreza
 {
     public class Program
@@ -6,6 +6,18 @@ namespace _0601DrustvenaMreza
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Naredni kod se dodaje **pre** linije koda: builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
 
             // Add services to the container.
 
@@ -15,6 +27,9 @@ namespace _0601DrustvenaMreza
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            // Zatim dodajemo sledeći kod **posle** linije koda var app = builder.Build();
+            app.UseCors("AllowAllOrigins");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -12,8 +12,6 @@
 
         private DateTime datumRodjenja;
 
-        public Dictionary<int, Grupa> grupe = new Dictionary<int, Grupa>();
-
         public int Id { get => id; set => id = value; }
         public string KorIme { get => korIme; set => korIme = value; }
         public string Ime { get => ime; set => ime = value; }
