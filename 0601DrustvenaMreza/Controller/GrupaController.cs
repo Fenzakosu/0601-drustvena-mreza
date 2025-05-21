@@ -21,6 +21,8 @@ namespace _0601DrustvenaMreza.Controller
 
         }
 
+
+
         // POST
         [HttpPost]
         public ActionResult<Grupa> CreateGroup([FromBody] Grupa novaGrupa)
@@ -65,6 +67,31 @@ namespace _0601DrustvenaMreza.Controller
             grupaRepo.Save();
 
             return NoContent();
+        }
+
+        [HttpGet("korisnici-bez-grupe")]
+        public ActionResult<List<Korisnik>> GetKorisnikeBezGrupe()
+        {
+            List<Korisnik> sviKorisnici = KorisnikRepo.Data.Values.ToList();
+            List<Grupa> sveGrupe = GrupaRepo.Data.Values.ToList();
+
+            HashSet<int> korisniciUGrupamaIds = new HashSet<int>();
+
+            // Dodaj sve ID-jeve korisnika koji su u nekoj grupi
+            foreach (Grupa grupa in sveGrupe)
+            {
+                foreach (Korisnik k in grupa.korisnici.Values)
+                {
+                    korisniciUGrupamaIds.Add(k.Id);
+                }
+            }
+
+            // Filtriraj korisnike koji nisu u nijednoj grupi
+            List<Korisnik> korisniciBezGrupe = sviKorisnici
+                .Where(k => !korisniciUGrupamaIds.Contains(k.Id))
+                .ToList();
+
+            return Ok(korisniciBezGrupe);
         }
 
     }
